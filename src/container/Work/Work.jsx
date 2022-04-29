@@ -11,14 +11,21 @@ const Work = () => {
   const [filterWork, setFilterWork] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     const query = '*[_type == "works"]';
+    const skillsQuery = '*[_type == "skills"]';
 
     client.fetch(query).then((data) => {
       setWorks(data);
       setFilterWork(data);
     });
+
+    client.fetch(skillsQuery).then((data) => {
+      setSkills(data);
+    });
+
   }, []);
 
   const handleWorkFilter = (item) => {
@@ -100,6 +107,26 @@ const Work = () => {
               <div className="app__work-tag app__flex">
                 <p className="p-text">{work.tags[0]}</p>
               </div>
+            </div>
+            <div className='app__work-skills'>
+              {work.skills.map((skill) => (
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5 }}
+                  className="app__skills-item app__flex"
+                  key={skill.name}
+                >
+                  <div
+                    className="app__flex"
+                    style={{ backgroundColor: skill.bgColor }}
+                  ><img src={urlFor(skills.find((skillFind) => (
+                    skillFind.name === skill
+                  )).icon)} alt={skill.name} />
+                    
+                  </div>
+                  <p className="p-text">{skill.name}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         ))}

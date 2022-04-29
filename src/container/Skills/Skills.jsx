@@ -11,12 +11,11 @@ const Skills = () => {
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    const query = '*[_type == "experiences"]';
+    const query = '*[_type == "experiences" && !(_id in path("drafts.**"))]';
     const skillsQuery = '*[_type == "skills"]';
 
     client.fetch(query).then((data) => {
       setExperiences(data);
-      console.log(data)
     });
 
     client.fetch(skillsQuery).then((data) => {
@@ -28,8 +27,8 @@ const Skills = () => {
     <>
       <h2 className="head-text">Skills & Experiences</h2>
 
-      <div className="app__skills-container">
-        <motion.div className="app__skills-list">
+      <div className="app__skills-container" >
+        <motion.div className="app__skills-list"  key={'skills'}>
           {skills.map((skill) => (
             <motion.div
               whileInView={{ opacity: [0, 1] }}
@@ -75,6 +74,7 @@ const Skills = () => {
                       effect="solid"
                       arrowColor="#fff"
                       className="skills-tooltip"
+                      
                     >
                       {work.desc}
                     </ReactTooltip>

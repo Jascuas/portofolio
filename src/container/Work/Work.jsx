@@ -14,16 +14,16 @@ const Work = () => {
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    const query = '*[_type == "works"]';
+    const query = '*[_type == "works" && !(_id in path("drafts.**"))]';
     const skillsQuery = '*[_type == "skills"]';
-
-    client.fetch(query).then((data) => {
-      setWorks(data);
-      setFilterWork(data);
-    });
 
     client.fetch(skillsQuery).then((data) => {
       setSkills(data);
+    });
+    
+    client.fetch(query).then((data) => {
+      setWorks(data);
+      setFilterWork(data);
     });
 
   }, []);
@@ -64,8 +64,8 @@ const Work = () => {
         transition={{ duration: 0.5, delayChildren: 0.5 }}
         className="app__work-portfolio"
       >
-        {filterWork.map((work, index) => (
-          <div className="app__work-item app__flex" key={index}>
+        {filterWork?.map((work) => (
+          <div className="app__work-item app__flex" key={work._id}>
             <div
               className="app__work-img app__flex"
             >
@@ -109,20 +109,19 @@ const Work = () => {
               </div>
             </div>
             <div className='app__work-skills'>
-              {work.skills.map((skill) => (
+              {work.skills.map((skill, index) => (
                 <motion.div
                   whileInView={{ opacity: [0, 1] }}
                   transition={{ duration: 0.5 }}
                   className="app__skills-item app__flex"
-                  key={skill.name}
+                  key={index}
                 >
                   <div
                     className="app__flex"
                     style={{ backgroundColor: skill.bgColor }}
-                  ><img src={urlFor(skills.find((skillFind) => (
+                  ><img src={urlFor(skills?.find((skillFind) => (
                     skillFind.name === skill
-                  )).icon)} alt={skill.name} />
-                    
+                  ))?.icon)} alt={skill.name} />
                   </div>
                   <p className="p-text">{skill.name}</p>
                 </motion.div>

@@ -15,6 +15,7 @@ const Skills = () => {
     const skillsQuery = '*[_type == "skills"]';
 
     client.fetch(query).then((data) => {
+      console.log(data)
       setExperiences(data);
     });
 
@@ -28,13 +29,13 @@ const Skills = () => {
       <h2 className="head-text">Skills & Experiences</h2>
 
       <div className="app__skills-container" >
-        <motion.div className="app__skills-list"  key={'skills'}>
-          {skills.map((skill) => (
+        <motion.div className="app__skills-list" key={"supeeer"}>
+          {skills?.map((skill) => (
             <motion.div
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 0.5 }}
               className="app__skills-item app__flex"
-              key={skill.name}
+              key={skill._id}
             >
               <div
                 className="app__flex"
@@ -47,17 +48,17 @@ const Skills = () => {
           ))}
         </motion.div>
         <div className="app__skills-exp">
-          {experiences.map((experience) => (
+          {experiences?.map((experience) => (
             <motion.div
               className="app__skills-exp-item"
-              key={experience.year}
+              key={experience._id}
             >
               <div className="app__skills-exp-year">
                 <p className="bold-text">{experience.year}</p>
               </div>
-              <motion.div className="app__skills-exp-works">
-                {experience.works.map((work) => (
-                  <>
+              <motion.div className="app__skills-exp-works" key={experience.year}>
+                {experience.works.map((work, i) => (
+                  <React.Fragment key={i}>
                     <motion.div
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 0.5 }}
@@ -78,7 +79,7 @@ const Skills = () => {
                     >
                       {work.desc}
                     </ReactTooltip>
-                  </>
+                  </React.Fragment>
                 ))}
               </motion.div>
             </motion.div>

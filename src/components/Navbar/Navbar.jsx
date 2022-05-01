@@ -7,7 +7,7 @@ import './Navbar.scss';
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
-  const menuItems = ['home', 'about', 'work', 'skills', 'contact']
+  const menuItems = ['home', 'about', 'work', 'experiences','skills', 'contact']
 
   return (
     <nav className="app__navbar">
@@ -33,7 +33,7 @@ const Navbar = () => {
           >
             <HiX onClick={() => setToggle(false)} />
             <ul>
-              {['home', 'about', 'work', 'skills', 'contact'].map((item) => (
+              {['home', 'about', 'work', 'experiences', 'skills', 'contact'].map((item) => (
                 <li key={item}>
                   <a href={`#${item}`} onClick={() => setToggle(false)}>
                     {item}

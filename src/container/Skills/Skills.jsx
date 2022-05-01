@@ -1,97 +1,77 @@
 import React, { useState, useEffect } from 'react';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { motion } from 'framer-motion';
-import ReactTooltip from 'react-tooltip';
 
 import { AppWrap, MotionWrap } from '../../wrapper';
 import { urlFor, client } from '../../client';
 import './Skills.scss';
 
 const Skills = () => {
-  const [experiences, setExperiences] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState([]);
+  const [brands, setBrands] = useState([]);
+
+  const handleClick = (index) => {
+    setCurrentIndex(index);
+  };
 
   useEffect(() => {
-    const query = '*[_type == "experiences" && !(_id in path("drafts.**"))]';
-    const skillsQuery = '*[_type == "skills"]';
+    const query = '*[_type == "testimonials"]';
+    const brandsQuery = '*[_type == "brands"]';
 
     client.fetch(query).then((data) => {
-      console.log(data)
-      setExperiences(data);
+      setTestimonials(data);
     });
 
-    client.fetch(skillsQuery).then((data) => {
-      setSkills(data);
+    client.fetch(brandsQuery).then((data) => {
+      setBrands(data);
     });
   }, []);
 
   return (
     <>
-      <h2 className="head-text">Skills & Experiences</h2>
+      {testimonials.length && (
+        <>
+          <div className="app__testimonial-item app__flex">
+            <img src={urlFor(testimonials[currentIndex].imgurl)} alt={testimonials[currentIndex].name} />
+            <div className="app__testimonial-content">
+              <p className="p-text">{testimonials[currentIndex].feedback}</p>
+              <div>
+                <h4 className="bold-text">{testimonials[currentIndex].name}</h4>
+                <h5 className="p-text">{testimonials[currentIndex].company}</h5>
+              </div>
+            </div>
+          </div>
 
-      <div className="app__skills-container" >
-        <motion.div className="app__skills-list" key={"supeeer"}>
-          {skills?.map((skill) => (
-            <motion.div
-              whileInView={{ opacity: [0, 1] }}
-              transition={{ duration: 0.5 }}
-              className="app__skills-item app__flex"
-              key={skill._id}
-            >
-              <div
-                className="app__flex"
-                style={{ backgroundColor: skill.bgColor }}
-              >
-                <img src={urlFor(skill.icon)} alt={skill.name} />
-              </div>
-              <p className="p-text">{skill.name}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-        <div className="app__skills-exp">
-          {experiences?.map((experience) => (
-            <motion.div
-              className="app__skills-exp-item"
-              key={experience._id}
-            >
-              <div className="app__skills-exp-year">
-                <p className="bold-text">{experience.year}</p>
-              </div>
-              <motion.div className="app__skills-exp-works" key={experience.year}>
-                {experience.works.map((work, i) => (
-                  <React.Fragment key={i}>
-                    <motion.div
-                      whileInView={{ opacity: [0, 1] }}
-                      transition={{ duration: 0.5 }}
-                      className="app__skills-exp-work"
-                      data-tip
-                      data-for={work.name}
-                      key={work.name}
-                    >
-                      <h4 className="bold-text">{work.name}</h4>
-                      <p className="p-text">{work.company}</p>
-                    </motion.div>
-                    <ReactTooltip
-                      id={work.name}
-                      effect="solid"
-                      arrowColor="#fff"
-                      className="skills-tooltip"
-                      
-                    >
-                      {work.desc}
-                    </ReactTooltip>
-                  </React.Fragment>
-                ))}
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
+          <div className="app__testimonial-btns app__flex">
+            <div className="app__flex" onClick={() => handleClick(currentIndex === 0 ? testimonials.length - 1 : currentIndex - 1)}>
+              <HiChevronLeft />
+            </div>
+
+            <div className="app__flex" onClick={() => handleClick(currentIndex === testimonials.length - 1 ? 0 : currentIndex + 1)}>
+              <HiChevronRight />
+            </div>
+          </div>
+        </>
+      )}
+
+      <div className="app__testimonial-brands app__flex">
+        {brands.map((brand) => (
+          <motion.div
+            whileInView={{ opacity: [0, 1] }}
+            transition={{ duration: 0.5, type: 'tween' }}
+            key={brand._id}
+          >
+            <img src={urlFor(brand.imgUrl)} alt={brand.name} />
+          </motion.div>
+        ))}
       </div>
     </>
   );
 };
 
 export default AppWrap(
-  MotionWrap(Skills, 'app__skills'),
+  MotionWrap(Skills, 'app__testimonial'),
   'skills',
-  'app__whitebg',
+  'app__primarybg',
 );

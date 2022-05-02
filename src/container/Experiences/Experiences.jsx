@@ -1,86 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import ReactTooltip from 'react-tooltip';
 
 import { AppWrap, MotionWrap } from '../../wrapper';
-import { urlFor, client } from '../../client';
+import { client } from '../../client';
 import './Experiences.scss';
 
 const Experiences = () => {
   const [experiences, setExperiences] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [educations, setEducations] = useState([]);
 
   useEffect(() => {
     const query = '*[_type == "experiences" && !(_id in path("drafts.**"))]';
-    const skillsQuery = '*[_type == "skills"]';
-
-    client.fetch(query).then((data) => {
-
-      setExperiences(data);
+    const queryEducations = '*[_type == "educations" && !(_id in path("drafts.**"))]';
+    
+    client.fetch(queryEducations).then((data) => {
+      data.sort((a, b) => b.year - a.year);
+      setEducations(data);
     });
 
-    client.fetch(skillsQuery).then((data) => {
-      data.sort((a, b) => a.name.localeCompare(b.name));
-      setSkills(data);
+    client.fetch(query).then((data) => {
+      data.sort((a, b) => b.year - a.year);
+      setExperiences(data);
     });
   }, []);
 
   return (
     <>
-      <h2 className="head-text">Skills & Experiences</h2>
-
-      <div className="app__skills-container" >
-        <motion.div className="app__skills-list" key={"supeeer"}>
-          {skills?.map((skill) => (
-            <motion.div
-              whileInView={{ opacity: [0, 1] }}
-              transition={{ duration: 0.5 }}
-              className="app__skills-item app__flex"
-              key={skill._id}
-            >
-              <div
-                className="app__flex"
-                style={{ backgroundColor: skill.bgColor }}
-              >
-                <img src={urlFor(skill.icon)} alt={skill.name} />
-              </div>
-              <p className="p-text">{skill.name}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-        <div className="app__skills-exp">
+      <h2 className="head-text">Experiences & Education</h2>
+      <div className="row">
+        <div className="app__experiences-container" >
           {experiences?.map((experience) => (
             <motion.div
-              className="app__skills-exp-item"
+              className="app__experiences-item"
               key={experience._id}
             >
-              <div className="app__skills-exp-year">
+              <div className="app__experiences-year">
                 <p className="bold-text">{experience.year}</p>
               </div>
-              <motion.div className="app__skills-exp-works" key={experience.year}>
-                {experience.works.map((work, i) => (
-                  <React.Fragment key={i}>
+              <motion.div className="app__experiences-works" key={experience.year}>
+                {experience.works.map((work) => (
                     <motion.div
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 0.5 }}
-                      className="app__skills-exp-work"
+                      className="app__experiences-work"
                       data-tip
                       data-for={work.name}
                       key={work.name}
                     >
                       <h4 className="bold-text">{work.name}</h4>
                       <p className="p-text">{work.company}</p>
+                      {work.desc.split("-").map((desc, i) => (
+                        <p className="p-text work-description" key={i}>{desc}</p>
+                      ))
+                      }
                     </motion.div>
-                    <ReactTooltip
-                      id={work.name}
-                      effect="solid"
-                      arrowColor="#fff"
-                      className="skills-tooltip"
-                      
+                ))}
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="app__experiences-container" >
+          {educations?.map((education) => (
+            <motion.div
+              className="app__experiences-item"
+              key={education._id}
+            >
+              <div className="app__experiences-year">
+                <p className="bold-text">{education.year}</p>
+              </div>
+              <motion.div className="app__experiences-works" key={education._rev}>
+                {education.works.map((work, i) => (
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 0.5 }}
+                      className="app__experiences-work"
+                      data-tip
+                      data-for={work.name}
+                      key={work._key}
                     >
-                      {work.desc}
-                    </ReactTooltip>
-                  </React.Fragment>
+                      <h4 className="bold-text">{work.name}</h4>
+                      <p className="p-text">{work.company}</p>
+                    </motion.div>
                 ))}
               </motion.div>
             </motion.div>
@@ -92,7 +92,7 @@ const Experiences = () => {
 };
 
 export default AppWrap(
-  MotionWrap(Experiences, 'app__skills'),
+  MotionWrap(Experiences, 'app__experiences'),
   'experiences',
   'app__whitebg',
 );

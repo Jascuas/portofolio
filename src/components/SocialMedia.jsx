@@ -4,7 +4,8 @@ import { BsLinkedin } from 'react-icons/bs';
 const SocialMedia = () => (
   <div className="app__social">
     <div>
-      <BsLinkedin />
+      
+      <a href={"https://www.linkedin.com/in/javiersanchezdelago/"}><BsLinkedin /></a>
     </div>
   </div>
 );

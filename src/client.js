@@ -14,8 +14,3 @@ const builder = imageUrlBuilder(client);
 
 export const urlFor = (source) => builder.image(source);
 
-
-    //   client
-    // .delete({query: '*[_id == "drafts.16be439f-0d21-4169-8b51-767f87a6f989"]'})
-    // .then(console.log)
-    // .catch(console.error)

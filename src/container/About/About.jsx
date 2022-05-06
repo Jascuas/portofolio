@@ -9,7 +9,7 @@ const About = () => {
   const [abouts, setAbouts] = useState([]);
 
   useEffect(() => {
-    const query = '*[_type == "abouts"]';
+    const query = '*[_type == "abouts" && !(_id in path("drafts.**"))]';
 
     client.fetch(query).then((data) => {
       setAbouts(data);

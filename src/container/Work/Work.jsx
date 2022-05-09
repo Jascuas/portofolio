@@ -45,6 +45,8 @@ const Work = () => {
 
   return (
     <>
+    {works && skills &&
+      <>
       <h2 className="head-text">My Creative <span>Portfolio</span> Section</h2>
 
       <div className="app__work-filter">
@@ -155,6 +157,9 @@ const Work = () => {
         ))}
       </motion.div>
     </>
+    }
+    </>
+    
   );
 };
 

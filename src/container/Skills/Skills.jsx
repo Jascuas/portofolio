@@ -20,6 +20,8 @@ const Skills = () => {
 
   return (
     <>
+    {skills &&
+      <>
       <h2 className="head-text">Skills & Stack 🔥</h2>
       <div className="app__skills-container" >
         <motion.div className="app__skills-list" key={"supeeer"}>
@@ -41,6 +43,8 @@ const Skills = () => {
           ))}
         </motion.div>
       </div>
+    </>
+    }
     </>
   );
 };

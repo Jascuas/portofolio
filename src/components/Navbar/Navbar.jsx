@@ -18,7 +18,6 @@ const Navbar = () => {
     } else {
       setActive("home")
     }
-    console.log(active);
   }, [location])
   return (
     <nav className="app__navbar">

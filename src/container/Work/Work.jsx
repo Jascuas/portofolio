@@ -71,7 +71,7 @@ const Work = () => {
             <div
               className="app__work-img app__flex"
             >
-              <img src={urlFor(work.imgUrl)} alt={work.name} />
+              <img src={urlFor(work.imgUrl).url()} alt={work.name} />
 
               <motion.div
                 whileHover={{ opacity: [0, 1] }}
@@ -147,7 +147,7 @@ const Work = () => {
                     style={{ backgroundColor: skill.bgColor }}
                   ><img src={urlFor(skills?.find((skillFind) => (
                     skillFind.name === skill
-                  ))?.icon)} alt={skill.name} />
+                  ))?.icon).url()} alt={skill.name} />
                   </div>
                   <p className="p-text">{skill.name}</p>
                 </motion.div>

@@ -1,35 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { HiMenuAlt4, HiX } from 'react-icons/hi';
 import { motion } from 'framer-motion';
-import { useLocation  } from 'react-router-dom'
-//style={active === item ? { backgroundColor: '#313BAC' } : {}}
+
 import { images } from '../../constants';
 import './Navbar.scss';
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [active, setActive] = useState("home");
-  const menuItems = ['home', 'about', 'work', 'experiences','skills', 'contact']
-  const location = useLocation();
+  const menuItems = ['home', 'about', 'work', 'experiences', 'skills', 'contact']
+
 
   useEffect(() => {
-    if(location.hash){
-      setActive(location.hash.substring(1))
-    } else {
-      setActive("home")
+    const handleScroll = (e) => {
+      const scrollY = window.scrollY
+      const menuItems = ['home', 'about', 'work', 'experiences', 'skills', 'contact']
+
+      if (scrollY >= 0 && scrollY <= window.innerHeight / 2) {
+        setActive("home")
+      } else {
+        menuItems.forEach((current) => {
+          const item = document.getElementById(current)
+          const itemHeight = item.offsetHeight;
+          const itemTop = item.offsetTop - 50;
+          if (
+            scrollY > itemTop &&
+            scrollY <= itemTop + itemHeight
+          ) {
+            setActive(current)
+            return
+          }
+        })
+      }
     }
-  }, [location])
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    }
+  }, [])
   return (
     <nav className="app__navbar">
       <div className="app__navbar-logo">
-      <a href={"#home"}><img src={images.logo} alt="logo" /></a>
+        <a href={"#home"}><img src={images.logo} alt="logo" /></a>
       </div>
       <ul className="app__navbar-links">
         {menuItems.map((item) => (
           <li className="app__flex p-text" key={`link-${item}`}>
             <div />
             <a href={`#${item}`}
-            style={active === item ? { color: '#313bac' } : {}}
+              style={active === item ? { color: '#313bac' } : {}}
             >{item}</a>
           </li>
         ))}

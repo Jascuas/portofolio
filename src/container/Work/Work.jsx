@@ -64,7 +64,7 @@ const Work = () => {
       <motion.div
         animate={animateCard}
         transition={{ duration: 0.5, delayChildren: 0.5 }}
-        className="app__work-portfolio"
+        className="app__work-portfolio"      
       >
         {filterWork?.map((work) => (
           <div className="app__work-item app__flex" key={work._id}>

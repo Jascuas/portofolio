@@ -45,7 +45,7 @@ const Work = () => {
 
   return (
     <>
-    {works && skills &&
+    {works && skills.length > 0 &&
       <>
       <h2 className="head-text">My Creative <span>Portfolio</span> Section</h2>
 

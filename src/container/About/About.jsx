@@ -33,7 +33,11 @@ const About = () => {
               >
                 <img src={urlFor(about.imgUrl).url()} alt={about.title} />
                 <h2 className="bold-text" style={{ marginTop: 20 }}>{about.title}</h2>
-                <p className="p-text" style={{ marginTop: 10 }}>{about.description}</p>
+                {about.description.split("*").map((desc, i) => (
+                  <p className="p-text" key={i}>{desc}</p>
+                ))
+                }
+                
               </motion.div>
             ))}
           </div>

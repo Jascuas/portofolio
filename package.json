@@ -20,7 +20,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "echo 'Building Sanity to public/studio' && cd studio && yarn && npx @sanity/cli build ../public/studio -y && echo 'Done'",
     "build": "react-scripts build",
+    "sanity": "cd studio && sanity start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

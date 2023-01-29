@@ -2,7 +2,7 @@
   "root": true,
   "project": {
     "name": "portfolio",
-    "basePath": "/studio"
+    "basePath": "/backend_sanity"
   },
   "api": {
     "projectId": "efgxa91a",

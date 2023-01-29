@@ -1,7 +1,7 @@
 {
     "version": 2,
     "rewrites": [{
-        "source": "/studio/(.*)",
-        "destination": "/studio/index.html"
+        "source": "/backend_sanity/(.*)",
+        "destination": "/backend_sanity/index.html"
     }]
 }

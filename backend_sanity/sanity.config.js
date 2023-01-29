@@ -5,7 +5,7 @@ import { schemaTypes } from './schemas'
 
 export default defineConfig({
     title: 'My studio',
-    basePath: '/studio',
+    basePath: '/backend_sanity',
     projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
     dataset: 'production',
     plugins: [deskTool()],
